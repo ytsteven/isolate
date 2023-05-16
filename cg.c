@@ -137,6 +137,7 @@ cg_write(cg_controller controller, const char *attr, const char *fmt, ...)
 
   char path[256];
   cg_makepath(path, sizeof(path), controller, attr);
+  die("cg_makepath %s: %s", path, attr);
 
   int fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
   if (fd < 0)
@@ -144,7 +145,7 @@ cg_write(cg_controller controller, const char *attr, const char *fmt, ...)
       if (maybe)
 	goto fail;
       else
-	die("Cannot write1 %s: %m", path);
+	die("Cannot write1 %s: %m, %d", path, fd);
     }
 
   int written = write(fd, buf, n);
